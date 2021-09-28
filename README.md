@@ -1,6 +1,6 @@
 # Multi-package Pure Skeleton with Development Environment
 
-![CI](https://github.com/grumply/pure-project-skeleton/workflows/CI/badge.svg)
+![CI](https://github.com/grumply/pure-project-reanimated/workflows/CI/badge.svg)
 
 This repo builds on [pure-project-skeleton](https://github.com/grumply/pure-project-skeleton) with [pure-admin](https://github.com/grumply/pure-admin) and [pure-conjurer](https://github.com/grumply/pure-conjurer) as a simple starting point for resource-oriented web applications.
 
