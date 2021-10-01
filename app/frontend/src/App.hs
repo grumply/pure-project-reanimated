@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module App (App(..)) where
 
 import Pure.Admin
@@ -35,10 +36,16 @@ instance Application App where
 
 instance Theme Post
 
-instance Component (Resource Post) where
-  view Post {..} _ =
+instance Component (Preview Post) where
+  view PostPreview {..} _ =
     Article <||>
       [ H1  <||> [ txt title ]
       , Div <||> [ txt synopsis ]
+      ]
+
+instance Component (Product Post) where
+  view Post {..} _ =
+    Article <||>
+      [ H1  <||> [ txt title ]
       , Div <||> [ txt content ]
       ]

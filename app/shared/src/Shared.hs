@@ -1,4 +1,4 @@
-{-# language DerivingStrategies, RecordWildCards, TypeFamilies, DeriveGeneric, DeriveAnyClass, CPP #-}
+{-# language DerivingStrategies, RecordWildCards, TypeFamilies, DeriveGeneric, DeriveAnyClass, CPP, DuplicateRecordFields #-}
 module Shared where
 
 import Pure.Data.Txt
@@ -6,18 +6,43 @@ import Pure.Data.JSON
 import Pure.Conjurer
 import Pure.Conjurer.Form
 
-import Data.Typeable
+import Data.Hashable
+
 import GHC.Generics
 
-data Post deriving Typeable
+data Post
 instance IsResource Post where
-  data Resource Post = Post
-    { title    :: Txt
+
+  data Identifier Post = PostName Txt
+    deriving stock Generic
+    deriving anyclass (ToJSON,FromJSON,Hashable,Eq)
+
+  data Resource Post = RawPost
+    { post     :: Txt
+    , title    :: Txt
     , synopsis :: Txt
     , content  :: Txt
     } deriving stock Generic
       deriving anyclass (ToJSON,FromJSON,Form)
 
-  root = "/blog"
+  identifyResource RawPost {..} = PostName post
 
-  slug Post {..} = toSlug title
+  data Product Post = Post
+    { post     :: Txt
+    , title    :: Txt
+    , synopsis :: Txt
+    , content  :: Txt
+    } deriving stock Generic
+      deriving anyclass (ToJSON,FromJSON)
+      
+  identifyProduct Post {..} = PostName post
+
+  data Preview Post = PostPreview
+    { post     :: Txt
+    , title    :: Txt
+    , synopsis :: Txt
+    } deriving stock Generic
+      deriving anyclass (ToJSON,FromJSON)
+
+
+  identifyPreview PostPreview {..} = PostName post

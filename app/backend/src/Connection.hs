@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 module Connection 
   ( Connection(..)
   ) where
@@ -9,7 +10,10 @@ import Pure.WebSocket as WS
 
 import Shared
 
-data Connection = Connection { admin :: Username, socket :: WebSocket }
+data Connection = Connection 
+  { admin :: Username
+  , socket :: WebSocket 
+  }
 
 instance Component Connection where
   data Model Connection = Model { adminToken :: Maybe (Token Admin) }
@@ -22,20 +26,27 @@ instance Component Connection where
 
   upon Startup Connection { admin = a, socket } mdl = do
     enact socket (Admin.admin AdminTokenMsg a)
-    enact socket (resourceBackend @Post postPermissions defaultCallbacks) 
+    enact socket (resourceReadingBackend @Post postPermissions postCallbacks) 
     activate socket
     pure mdl
 
-  upon (AdminTokenMsg tm) _ mdl@Model { adminToken } = case tm of
+  upon (AdminTokenMsg tm) Connection { socket } mdl@Model { adminToken } = case tm of
     GetToken withToken -> withToken adminToken >> pure mdl
-    ClearToken -> pure mdl { adminToken = Nothing }
-    SetToken t -> pure mdl { adminToken = Just t }
+    ClearToken -> do
+      WS.remove socket (resourcePublishingAPI @Post)
+      pure mdl { adminToken = Nothing }
+    SetToken t@(Token (un,_)) -> do
+      enact socket (resourcePublishingBackend @Post un postPermissions postCallbacks)
+      pure mdl { adminToken = Just t }
 
-postPermissions :: Elm (Msg Connection) => Permissions Post
-postPermissions = Permissions {..}
-  where
-    canCreate _ = isAdmin AdminTokenMsg
-    canRead   _ = pure True
-    canUpdate _ = isAdmin AdminTokenMsg
-    canDelete _ = isAdmin AdminTokenMsg
-    canList     = isAdmin AdminTokenMsg
+instance Previewable Post where
+  preview Post {..} = pure PostPreview {..}
+
+instance Producible Post where
+  produce RawPost {..} = pure Post {..}
+
+postPermissions :: Permissions Post
+postPermissions = def
+
+postCallbacks :: Callbacks Post
+postCallbacks = def

@@ -11,6 +11,7 @@ in
         , "pure-json"
         , "pure-txt"
         , "pure-websocket"
+        , "hashable"
         ]
     , library = 
         { source-dirs = ["src"]

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4be05f3f24216d243a4b589b518c0ccd41667df0dba28ce92d89824afefa9319
+-- hash: 08875d72fed759e1f3c9ebb97b8a9bd899b003cce472f676e0e7dddcf84c6a5d
 
 name:           backend
 version:        0.1.0.0

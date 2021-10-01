@@ -13,6 +13,7 @@ dependencies:
 - pure-json
 - pure-txt
 - pure-websocket
+- hashable
 default-extensions:
 - AutoDeriveTypeable
 - BangPatterns
