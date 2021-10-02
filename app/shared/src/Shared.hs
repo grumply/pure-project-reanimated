@@ -5,44 +5,54 @@ import Pure.Data.Txt
 import Pure.Data.JSON
 import Pure.Conjurer
 import Pure.Conjurer.Form
+import Pure.Router
 
 import Data.Hashable
 
 import GHC.Generics
 
 data Post
-instance IsResource Post where
 
-  data Identifier Post = PostName Txt
-    deriving stock Generic
-    deriving anyclass (ToJSON,FromJSON,Hashable,Eq)
+data instance Identifier Post = PostName Txt
+  deriving stock Generic
+  deriving anyclass (ToJSON,FromJSON,Hashable,Eq)
 
-  data Resource Post = RawPost
-    { post     :: Txt
-    , title    :: Txt
-    , synopsis :: Txt
-    , content  :: Txt
-    } deriving stock Generic
-      deriving anyclass (ToJSON,FromJSON,Form)
+data instance Resource Post = RawPost
+  { post     :: Txt
+  , title    :: Txt
+  , synopsis :: Txt
+  , content  :: Txt
+  } deriving stock Generic
+    deriving anyclass (ToJSON,FromJSON,Form)
 
-  identifyResource RawPost {..} = PostName post
+instance Identifiable Resource Post where
+  identify RawPost {..} = PostName post
 
-  data Product Post = Post
-    { post     :: Txt
-    , title    :: Txt
-    , synopsis :: Txt
-    , content  :: Txt
-    } deriving stock Generic
-      deriving anyclass (ToJSON,FromJSON)
-      
-  identifyProduct Post {..} = PostName post
+data instance Product Post = Post
+  { post     :: Txt
+  , title    :: Txt
+  , content  :: Txt
+  } deriving stock Generic
+    deriving anyclass (ToJSON,FromJSON)
 
-  data Preview Post = PostPreview
-    { post     :: Txt
-    , title    :: Txt
-    , synopsis :: Txt
-    } deriving stock Generic
-      deriving anyclass (ToJSON,FromJSON)
+instance Identifiable Product Post where
+  identify Post {..} = PostName post
 
+data instance Preview Post = PostPreview
+  { post     :: Txt
+  , title    :: Txt
+  , synopsis :: Txt
+  } deriving stock Generic
+    deriving anyclass (ToJSON,FromJSON)
 
-  identifyPreview PostPreview {..} = PostName post
+instance Identifiable Preview Post where
+  identify PostPreview {..} = PostName post
+
+instance Routable Post where
+  locate (PostName p) = "/" <> p
+
+  route lift = 
+    path "/:post" do
+      post <- "post"
+      dispatch (lift (PostName post))
+

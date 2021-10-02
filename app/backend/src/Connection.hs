@@ -40,7 +40,7 @@ instance Component Connection where
       pure mdl { adminToken = Just t }
 
 instance Previewable Post where
-  preview Post {..} = pure PostPreview {..}
+  preview RawPost {..} _ = pure PostPreview {..}
 
 instance Producible Post where
   produce RawPost {..} = pure Post {..}

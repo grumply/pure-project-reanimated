@@ -9,6 +9,7 @@ in
         , "pure"
         , "pure-conjurer"
         , "pure-json"
+        , "pure-router"
         , "pure-txt"
         , "pure-websocket"
         , "hashable"

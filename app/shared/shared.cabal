@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9a3149e8d174aa6eb959d0de804b913ece147e66762433ac019401a77932b374
+-- hash: f866b7efc443862b3352328e87ca7fc72db6f108b110d9e898a11f30d6c996c1
 
 name:                shared
 version:             0.1.0.0
@@ -25,6 +25,7 @@ library
     pure,
     pure-conjurer,
     pure-json,
+    pure-router,
     pure-txt,
     pure-websocket
   hs-source-dirs:
