@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveAnyClass #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 module App (App(..)) where
 
@@ -9,13 +10,15 @@ import qualified Pure.WebSocket as WS
 
 import Shared
 
+import GHC.Generics
+
 data App = App 
   { socket :: WS.WebSocket }
 
 instance Application App where
   data Route App 
     = HomeR 
-    | BlogR (ResourceRoute Post)
+    | BlogR (ResourceRoute Admin Post)
   
   home = HomeR
 
@@ -25,11 +28,6 @@ instance Application App where
 
   routes = do
     resourceRoutes BlogR
-    path "/blog" do
-      path "/:post" do
-        post <- "post"
-        dispatch (BlogR (ReadProduct "admin" (PostName post)))
-      dispatch (BlogR (ListPreviews (Just "admin")))
     dispatch HomeR
 
   view route App { socket } _ = 
@@ -39,9 +37,17 @@ instance Application App where
         BlogR r -> resourcePage @Admin socket r
       ]
 
+instance Pathable (Identifier Post)
+instance Readable Post
+instance Creatable Admin Post where
+  data CreateContext Admin Post = CreatePostContext
+    deriving stock Generic
+    deriving anyclass Pathable
+instance Listable Post
+
 instance Component (Preview Post) where
   view p@PostPreview {..} _ =
-    Article <| OnClick (\_ -> goto (ReadProduct "admin" (identify p))) |>
+    Article <| OnClick (\_ -> goto (ReadR @Admin (Read "admin" (identify p)))) |>
       [ H1  <||> [ txt title ]
       , Div <||> [ txt synopsis ]
       ]

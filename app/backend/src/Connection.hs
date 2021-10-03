@@ -26,7 +26,7 @@ instance Component Connection where
 
   upon Startup Connection { admin = a, socket } mdl = do
     enact socket (Admin.admin AdminTokenMsg a)
-    enact socket (resourceReadingBackend @Post postPermissions postCallbacks) 
+    enact socket (resourceReadingBackend @Post) 
     activate socket
     pure mdl
 
@@ -36,17 +36,14 @@ instance Component Connection where
       WS.remove socket (resourcePublishingAPI @Post)
       pure mdl { adminToken = Nothing }
     SetToken t@(Token (un,_)) -> do
-      enact socket (resourcePublishingBackend @Post un postPermissions postCallbacks)
+      enact socket (resourcePublishingBackend @Post un)
       pure mdl { adminToken = Just t }
+
+instance Permissions Post
+instance Callbacks Post
 
 instance Previewable Post where
   preview RawPost {..} _ = pure PostPreview {..}
 
 instance Producible Post where
   produce RawPost {..} = pure Post {..}
-
-postPermissions :: Permissions Post
-postPermissions = def
-
-postCallbacks :: Callbacks Post
-postCallbacks = def
