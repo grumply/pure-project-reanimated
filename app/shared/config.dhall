@@ -8,6 +8,7 @@ in
         [ "base"
         , "pure"
         , "pure-conjurer"
+        , "pure-default"
         , "pure-json"
         , "pure-router"
         , "pure-txt"

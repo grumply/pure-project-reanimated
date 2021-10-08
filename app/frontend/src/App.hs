@@ -4,13 +4,11 @@ module App (App(..)) where
 
 import Pure.Admin
 import Pure.Conjurer
-import Pure.Elm.Application hiding (run,goto)
+import Pure.Elm.Application hiding (goto)
 import Pure.Elm.Component hiding (App)
 import qualified Pure.WebSocket as WS
 
 import Shared
-
-import GHC.Generics
 
 data App = App 
   { socket :: WS.WebSocket }
@@ -34,20 +32,18 @@ instance Application App where
     Div <||>
       [ case route of
         HomeR -> Null
-        BlogR r -> resourcePage @Admin socket r
+        BlogR r -> resourcePages @Admin socket r
       ]
 
-instance Pathable (Identifier Post)
+instance Formable (Resource Post)
 instance Readable Post
-instance Creatable Admin Post where
-  data CreateContext Admin Post = CreatePostContext
-    deriving stock Generic
-    deriving anyclass Pathable
+instance Creatable Admin Post
+instance Updatable Admin Post
 instance Listable Post
 
-instance Component (Preview Post) where
-  view p@PostPreview {..} _ =
-    Article <| OnClick (\_ -> goto (ReadR @Admin (Read "admin" (identify p)))) |>
+instance Component (KeyedPreview Post) where
+  view (KeyedPreview ctx nm PostPreview {..}) _ =
+    Article <| OnClick (\_ -> goto (ReadR @Admin ctx nm)) |>
       [ H1  <||> [ txt title ]
       , Div <||> [ txt synopsis ]
       ]
