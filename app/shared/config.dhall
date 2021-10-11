@@ -9,6 +9,7 @@ in
         , "pure"
         , "pure-conjurer"
         , "pure-default"
+        , "pure-elm"
         , "pure-json"
         , "pure-router"
         , "pure-txt"

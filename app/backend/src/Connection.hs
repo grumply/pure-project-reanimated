@@ -26,7 +26,7 @@ instance Component Connection where
 
   upon Startup Connection { admin = a, socket } mdl = do
     enact socket (Admin.admin AdminTokenMsg a)
-    enact socket (readingBackend @Post unsafeDefaultPermissions def) 
+    enact socket (cachingReading @Post readPermissions def) 
     activate socket
     pure mdl
 
@@ -36,13 +36,19 @@ instance Component Connection where
       WS.remove socket (publishingAPI @Post)
       pure mdl { adminToken = Nothing }
     SetToken t@(Token (un,_)) -> do
-      enact socket (publishingBackend @Post unsafeDefaultPermissions def)
+      enact socket (cachingPublishing @Post fullPermissions def)
       pure mdl { adminToken = Just t }
 
 instance Processable Post
 
 instance Previewable Post where
-  preview RawPost {..} _ = pure PostPreview {..}
+  preview RawPost {..} _ = pure PostPreview 
+    { synopsis = toTxt synopsis
+    , ..
+    }
 
 instance Producible Post where
-  produce RawPost {..} = pure Post {..}
+  produce RawPost {..} = pure Post 
+    { content = toTxt content
+    , ..
+    }
