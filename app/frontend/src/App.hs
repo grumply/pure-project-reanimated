@@ -55,9 +55,6 @@ instance Creatable Admin Post
 instance Updatable Admin Post
 instance Listable Post
 
-instance Component (KeyedPreview Post) where
-  view (KeyedPreview ctx nm pp) _ = run pp
-
 instance Component (Product Post) where
   view Post {..} _ =
     Article <||>
