@@ -10,24 +10,13 @@ import qualified Pure.WebSocket as WS
 
 import Shared
 
-{-
-
-Since @Post has an empty context, the generated routes are: 
-
-    /post/list
-    /post/new
-    /post/update/:slug
-    /post/:slug
-
--}
-
 data App = App 
   { socket :: WS.WebSocket }
 
 instance Application App where
   data Route App 
     = HomeR 
-    | BlogR (C.Route Admin Post)
+    | BlogR (C.Route Post)
   
   home = HomeR
 
