@@ -13,22 +13,16 @@ import Pure.Elm.Component
 import qualified Pure.Server as Pure
 import Pure.Sorcerer
 
-data Server = Server
+data Server = Server Config
 
 instance Component Server where
   data Model Server = Model
-    { admin :: Username
-    , host  :: String
-    , port  :: Int
-    } 
     
-  initialize _ = do
-    Config {..} <- getConfig
-    cache @Post
+  initialize (Server Config {..}) = do
     Admin.initialize admin password
-    pure Model {..}
+    pure Model
 
-  view _ Model {..} = 
+  view (Server Config {..}) Model = 
     Div <||>
       [ sorcerer (adminDB ++ db @Post)
       , Pure.Server host port (run . Connection admin)
