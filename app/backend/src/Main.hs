@@ -1,32 +1,32 @@
 module Main where
 
-import Server
-import Server.Config
-
 import Shared
 
-import Pure.Conjurer
+import Pure
 import Pure.Elm.Component
-import Pure.WebSocket
+import Pure.Conjurer
+import Pure.Convoker.Discussion.Simple.Threaded
+import Pure.Magician.Server
 
-import Control.Monad
-
-main :: IO ()
 main = do
-  c <- getConfig
-  inject body (run (Server c))
-  cache @Post
-  statics c
-  forever do
-    delay Minute
+  serve @MyApp defaultUserConfig
 
-statics :: Config -> IO ()
-statics Config {..} = do
-  ws <- clientWS host port
-  generateStatic @Post ws
+instance Previewable Post where
+  preview _ _ _ RawPost {..} _ = 
+    pure PostPreview 
+      { title = toTxt title
+      , synopsis = toTxt synopsis
+      }
 
-instance Component (Product Post) where
-  view Post {..} _ =
+instance Producible Post where
+  produce _ context name RawPost {..} _ = 
+    pure Post 
+      { title = toTxt title
+      , content = toTxt content
+      }
+
+instance Pure (Product Post) where
+  view Post {..} =
     Article <||>
       [ Header  <||> [ H1 <||> [ txt title ] ]
       , Section <||> [ P  <||> [ txt content ] ]

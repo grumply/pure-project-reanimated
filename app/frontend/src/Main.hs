@@ -1,15 +1,13 @@
 module Main where
 
-import Pure.Auth
-import Pure.Admin
-import Pure.Elm.Component as Component
-import Pure.Elm.Application as Application
-import Pure.WebSocket
-
 import App
 
+import Shared
+
+import Pure.Magician.Client
+
 main :: IO ()
-main = do
-  ws <- clientWS "127.0.0.1" 8081
-  inject body (run (Access ws def def :: Access Admin))
-  inject body (execute (App.App ws))
+main = client @MyApp host port MyApp
+  where
+    host = "127.0.0.1"
+    port = 8081

@@ -4,10 +4,12 @@ ghc-options: -Wall -fno-warn-partial-type-signatures -fno-warn-missing-methods -
   -rtsopts -threaded
 dependencies:
 - base
-- pure-admin
+- pure
 - pure-conjurer
+- pure-convoker
 - pure-json
 - pure-elm
+- pure-magician
 - pure-server
 - pure-sorcerer
 - pure-websocket
@@ -74,10 +76,12 @@ executables:
     main: Main.hs
     dependencies:
     - base
-    - pure-admin
+    - pure
     - pure-conjurer
+    - pure-convoker
     - pure-json
     - pure-elm
+    - pure-magician
     - pure-server
     - pure-sorcerer
     - pure-websocket

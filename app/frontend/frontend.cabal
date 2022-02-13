@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 0f53c0a8f88749042d6552655b752a8615ac4c33be565b8a05b5da42cad0da9f
+-- hash: 03b520d055c5f88bfe9fcc3bf13883dc187c2f6d3959090f6f3b140c88d9cf25
 
 name:           frontend
 version:        0.1.0.0
@@ -28,10 +28,12 @@ executable frontend
   ghcjs-options: -threaded -dedupe -DGHCJS_BROWSER -DGHCJS_GC_INTERVAL=3000000
   build-depends:
       base
-    , pure-admin
+    , pure
     , pure-auth
     , pure-conjurer
     , pure-elm
+    , pure-magician
     , pure-websocket
+    , pure-websocket-cache
     , shared
   default-language: Haskell2010

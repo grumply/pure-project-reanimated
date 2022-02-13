@@ -6,3 +6,5 @@ packages:
   app/frontend/
   app/shared/
 
+package backend
+  ghc-options: -rtsopts -threaded -with-rtsopts="-N -A4M -I0

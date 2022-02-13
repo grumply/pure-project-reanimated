@@ -9,10 +9,14 @@ ghc-options: -Wall -fno-warn-partial-type-signatures -fno-warn-missing-methods -
 dependencies:
 - base
 - pure
+- pure-auth
 - pure-conjurer
+- pure-convoker
 - pure-default
 - pure-elm
 - pure-json
+- pure-magician
+- pure-render
 - pure-router
 - pure-txt
 - pure-websocket

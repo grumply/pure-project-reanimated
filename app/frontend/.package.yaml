@@ -4,11 +4,13 @@ ghc-options: -Wall -fno-warn-partial-type-signatures -fno-warn-missing-methods -
   -rtsopts -threaded
 dependencies:
 - base
-- pure-admin
+- pure
 - pure-auth
 - pure-conjurer
 - pure-elm
+- pure-magician
 - pure-websocket
+- pure-websocket-cache
 - shared
 default-extensions:
 - AutoDeriveTypeable
@@ -71,9 +73,11 @@ executables:
     main: Main.hs
     dependencies:
     - base
-    - pure-admin
+    - pure
     - pure-auth
     - pure-conjurer
     - pure-elm
+    - pure-magician
     - pure-websocket
+    - pure-websocket-cache
     - shared

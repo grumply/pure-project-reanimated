@@ -1,48 +1,14 @@
-{-# language DerivingStrategies, RecordWildCards, TypeFamilies, DeriveGeneric, DeriveAnyClass, CPP, DuplicateRecordFields #-}
-module Shared where
+module Shared (module Export, module Shared) where
 
-import Pure.Data.Default
-import Pure.Data.JSON
-import Pure.Data.Txt
-import Pure.Conjurer
+import Shared.MyApp as Export
+import Shared.Post as Export
 
-import Data.Hashable
+import Pure.Magician.Client
 
-import GHC.Generics
+type instance Resources MyApp = '[Post]
 
-data Post
+instance Client MyApp
 
-newtype Content = Content Txt
-  deriving (ToTxt,FromTxt,ToJSON,FromJSON) via Txt
+instance Server MyApp where
+  type Discussions MyApp = '[Post]
 
-data instance Resource Post = RawPost
-  { title    :: Txt
-  , synopsis :: Content
-  , content  :: Content
-  } deriving stock Generic
-    deriving anyclass (ToJSON,FromJSON,Default)
-
-data instance Context Post = PostContext
-  deriving stock (Generic,Eq,Ord)
-  deriving anyclass (ToJSON,FromJSON,Pathable,Hashable)
-
-data instance Name Post = PostName (Slug Post)
-  deriving stock (Generic,Eq,Ord)
-  deriving anyclass (ToJSON,FromJSON,Pathable,Hashable)
-
-instance Routable Post
-
-instance Nameable Post where
-  toName RawPost {..} = PostName (fromTxt (toTxt title))
-
-data instance Product Post = Post
-  { title    :: Txt
-  , content  :: Txt
-  } deriving stock Generic
-    deriving anyclass (ToJSON,FromJSON)
-
-data instance Preview Post = PostPreview
-  { title    :: Txt
-  , synopsis :: Txt
-  } deriving stock Generic
-    deriving anyclass (ToJSON,FromJSON)

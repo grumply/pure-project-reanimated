@@ -5,11 +5,13 @@ let frontend = ../config.dhall
 
 let deps = 
       [ "base"
-      , "pure-admin"
+      , "pure"
       , "pure-auth"
       , "pure-conjurer"
       , "pure-elm"
+      , "pure-magician"
       , "pure-websocket"
+      , "pure-websocket-cache"
       , "shared"
       ]
 

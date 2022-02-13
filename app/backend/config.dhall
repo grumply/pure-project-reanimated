@@ -5,10 +5,12 @@ let backend = ../config.dhall
 
 let deps =
       [ "base"
-      , "pure-admin"
+      , "pure"
       , "pure-conjurer"
+      , "pure-convoker"
       , "pure-json"
       , "pure-elm"
+      , "pure-magician"
       , "pure-server"
       , "pure-sorcerer"
       , "pure-websocket"

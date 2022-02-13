@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7536a5aeebb37bb05fe2ea771e84f62dd60f61b8776a3a664ea6f50b35281a96
+-- hash: c6263ac1bb3d45b9376d135e7f1084d67c49aa72d9083e5f80658d9ae4be8e9a
 
 name:                shared
 version:             0.1.0.0
@@ -19,14 +19,20 @@ build-type:          Simple
 library
   exposed-modules:
     Shared
+    Shared.MyApp
+    Shared.Post
   build-depends:
     base,
     hashable,
     pure,
+    pure-auth,
     pure-conjurer,
+    pure-convoker,
     pure-default,
     pure-elm,
     pure-json,
+    pure-magician,
+    pure-render,
     pure-router,
     pure-txt,
     pure-websocket

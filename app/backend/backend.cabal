@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 08875d72fed759e1f3c9ebb97b8a9bd899b003cce472f676e0e7dddcf84c6a5d
+-- hash: 8bf327660e70fed6008f138615b7ac36e7e13322929e370efe916b2be7f2a476
 
 name:           backend
 version:        0.1.0.0
@@ -19,9 +19,6 @@ build-type:     Simple
 executable backend
   main-is: Main.hs
   other-modules:
-      Connection
-      Server
-      Server.Config
       Paths_backend
   hs-source-dirs:
       src
@@ -30,10 +27,12 @@ executable backend
   ghcjs-options: -threaded -dedupe -DGHCJS_BROWSER -DGHCJS_GC_INTERVAL=3000000
   build-depends:
       base
-    , pure-admin
+    , pure
     , pure-conjurer
+    , pure-convoker
     , pure-elm
     , pure-json
+    , pure-magician
     , pure-server
     , pure-sorcerer
     , pure-websocket
